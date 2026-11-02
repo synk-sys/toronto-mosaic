@@ -1,0 +1,42 @@
+rules_version = '2';
+
+// Toronto Mosaic security model
+// - All writes go through the Next.js server (Firebase Admin SDK bypasses rules),
+//   where identity, validation, moderation, rate limits and atomic tile
+//   assignment are enforced. Clients can never write directly.
+// - Clients may read only the public, privacy-safe projections:
+//   tiles (no participant ids, approved messages only), eventConfig, aggregates.
+// - contributions/* contains participantUid and unmoderated text: never readable.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /tiles/{tileId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /eventConfig/{doc} {
+      allow read: if doc == 'main';
+      allow write: if false;
+    }
+
+    match /aggregates/{doc} {
+      allow read: if doc == 'main';
+      allow write: if false;
+    }
+
+    match /participants/{uid} {
+      // A participant may check their own lock document; nobody else can.
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /contributions/{id} {
+      allow read, write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
