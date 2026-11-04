@@ -170,8 +170,7 @@ export function CreateFlow() {
                   {!ready ? <Loader2 className="animate-spin" /> : <Sparkles />} Create my tile
                 </Button>
               )}
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>No sign-up · about 30 seconds</span>
+              <div className="flex items-center justify-center text-sm text-muted-foreground">
                 <Link href="/mosaic" className="font-medium text-foreground underline-offset-4 hover:underline">
                   Explore the mosaic →
                 </Link>
