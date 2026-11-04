@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, ArrowRight, Loader2, RotateCcw, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
@@ -167,7 +167,7 @@ export function CreateFlow() {
                 </div>
               ) : (
                 <Button size="lg" className="w-full" onClick={() => setStep("color")} disabled={!ready && !own}>
-                  {!ready ? <Loader2 className="animate-spin" /> : <Sparkles />} Create my tile
+                  {!ready && <Loader2 className="animate-spin" />} Create my tile
                 </Button>
               )}
               <div className="flex items-center justify-center text-sm text-muted-foreground">
