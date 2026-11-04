@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { api, ensureSession, withRetry } from "@/lib/client/api";
+import { ApiError, api, ensureSession, withRetry } from "@/lib/client/api";
 import type { OwnContribution } from "@/lib/types";
 
 const CACHE_KEY = "toronto-mosaic:own";
@@ -48,7 +48,13 @@ export function useParticipant() {
         await withRetry(() => ensureSession());
         await withRetry(refresh);
       } catch (e) {
-        setError((e as Error).message);
+        // Details stay in the console; attendees get a message that matches the failure.
+        console.error("[mosaic] could not start participant session", e);
+        setError(
+          e instanceof ApiError && e.code === "NETWORK"
+            ? "We can't reach the server. Check your Wi-Fi and refresh."
+            : "The mosaic isn't accepting connections right now. Please let an organizer know.",
+        );
       } finally {
         setReady(true);
       }

@@ -178,7 +178,7 @@ export function CreateFlow() {
               </div>
               {sessionError && (
                 <p role="alert" className="text-sm text-rose-200">
-                  We&apos;re having trouble connecting. Check your Wi-Fi and refresh.
+                  {sessionError}
                 </p>
               )}
             </div>
